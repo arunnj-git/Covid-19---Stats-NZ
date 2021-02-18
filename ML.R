@@ -5,7 +5,7 @@ library(randomForest)
 library(stringr)
 library(forecast)
 library(lubridate)
-
+library(ggplot2)
 #Importing data set
 df_jobs <- read.csv("jobs online.csv")
 
@@ -44,4 +44,5 @@ df_pred <- tibble(obs = c(df_jobs_train1$value, df_jobs_test$value),
 ggplot(gather(df_pred, obs_pred, value, -date) %>% 
          mutate(obs_pred = factor(obs_pred, levels = c("predicted", "obs"))), 
        aes(x = date, y = value, col = obs_pred, linetype = obs_pred)) +
-  geom_line() 
+  geom_line() + ggtitle("Employement index over  13 years") +xlab("year") + ylab("Index")
+
