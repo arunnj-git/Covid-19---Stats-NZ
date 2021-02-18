@@ -42,6 +42,7 @@ plot3 <- ggplot(dfplot_r, mapping = aes(x = date, y = value, color = country) ) 
 grid.arrange(plot1, plot2, plot3, ncol=3)
 
 ##############
+##Read  the csv again to filter rest of world as it is removed in  the previous step
 # Plotting number of cases in New Zealand vs Rest of world
 target <- c("New Zealand", "Rest of world")
 df <- df_cases %>% filter(country %in% target)
@@ -72,14 +73,38 @@ df_bills <- as_tibble(df_bills)
 df_income <- as_tibble(df_income)
 
 names(df_bills)[names(df_bills) == "sub_series_name"] <- "Wave"
-names(df_bills)[names(df_bills) == "parameter"] <- "ability to meet bills"
+names(df_bills)[names(df_bills) == "parameter"] <- "response"
 names(df_bills)[names(df_bills) == "value"] <- "count"
 
 names(df_income)[names(df_income) == "sub_series_name"] <- "Wave"
-names(df_income)[names(df_income) == "parameter"] <- "change in income"
+names(df_income)[names(df_income) == "parameter"] <- "income"
 
-target1 <- c("Wave", "ability to meet bills", "count")
-df1 <- df_bills %>% select(target1)
+target1 <- c("Wave", "income", "value")
+df1 <- df_income %>% select(target1)
 
-target2 <- c("Wave", "change in income", "value")
-df2 <- df_income %>% select(target2)
+target2 <- c("Wave", "response", "count")
+df2 <- df_bills %>% select(target2)
+
+#Plot for wave 1
+dfplot_w1 <- df1 %>% 
+  filter(Wave=="Wave 1")
+dfplot_w2 <- df2 %>% 
+  filter(Wave=="Wave 1")
+
+plot7 <- ggplot(dfplot_w1, mapping = aes(x = income, y = value) ) + geom_bar(stat="identity") + ggtitle("How the New Zealander's income changes in reponse to Covid 19") +
+  xlab("income") + ylab("Percentage")
+plot8 <- ggplot(dfplot_w2, mapping = aes(x = response, y = count) ) + geom_bar(stat="identity") + ggtitle("Ability to meet bills by New Zealanders on changing income") +
+  xlab("Ability to meet bills") + ylab("Percentage")
+grid.arrange(plot7, plot8, ncol=2)
+
+#Plot for wave 2
+dfplot_w11 <- df1 %>% 
+  filter(Wave=="Wave 2")
+dfplot_w22 <- df2 %>% 
+  filter(Wave=="Wave 2")
+
+plot9 <- ggplot(dfplot_w1, mapping = aes(x = income, y = value) ) + geom_bar(stat="identity") + ggtitle("How the New Zealander's income changes in reponse to Covid 19") +
+  xlab("income") + ylab("Percentage")
+plot10 <- ggplot(dfplot_w2, mapping = aes(x = response, y = count) ) + geom_bar(stat="identity") + ggtitle("Ability to meet bills by New Zealanders on changing income") +
+  xlab("Ability to meet bills") + ylab("Percentage")
+grid.arrange(plot9, plot10, ncol=2)
